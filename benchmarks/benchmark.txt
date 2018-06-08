@@ -1,0 +1,4 @@
+Average req/sec in 5 times 10s test
+with no plugin: 30506.48
+with expect-ct middleware: 28123.97
+with fastify-expect-ct plugin: 29343.46
