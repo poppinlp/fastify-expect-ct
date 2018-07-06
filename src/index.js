@@ -1,7 +1,7 @@
 const fp = require('fastify-plugin');
 
 const expectCt = (app, opts, next) => {
-	const maxAge = typeof opts.maxAge === 'number' ? Math.round(opts.maxAge) : 0;
+	const maxAge = typeof opts.maxAge === 'number' && opts.maxAge > 0 ? Math.round(opts.maxAge) : 0;
 	const headerArr = [];
 
 	headerArr.push(`max-age=${maxAge}`);

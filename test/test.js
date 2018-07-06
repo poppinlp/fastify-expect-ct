@@ -12,52 +12,70 @@ test.beforeEach(t => {
 	t.context.app = app;
 });
 
-const testHandler = (t, opts, expectedHeader, params = '') => {
-	const { app } = t.context;
+const mock = async (t, opts, expected) => {
+	const rsp = await t.context.app.register(plugin, opts).inject({
+		method: 'get',
+		url: '/'
+	});
+	const header = rsp.headers['expect-ct'];
 
-	t.plan(3);
-	app.register(plugin, opts);
-	app.inject(
-		{
-			method: 'GET',
-			url: `/${params}`
-		},
-		(err, res) => {
-			const expected = {
-				payload: 'hello world',
-				header: expectedHeader
-			};
-			const target = {
-				payload: res.payload,
-				header: res.headers['expect-ct']
-			};
-
-			t.is(err, null, 'should throw no error');
-			t.is(target.payload, expected.payload, 'should have expected response payload');
-			t.is(target.header, expected.header, 'should have expected response header');
-			t.end();
-		}
-	);
+	t.is(header, expected);
 };
 
-test.cb('default option', t => {
-	testHandler(t, {}, 'max-age=0');
+[
+	{ maxAge: -123 },
+	{ maxAge: '123' },
+	{ maxAge: true },
+	{ maxAge: false },
+	{ maxAge: {} },
+	{ maxAge: [] },
+	{ maxAge: [] },
+	{ maxage: false },
+	{ maxage: 1234 }
+].forEach(opts => {
+	test(`should get default value for invalid params: ${JSON.stringify(opts)}`, async t => {
+		await mock(t, opts, 'max-age=0');
+	});
 });
 
-test.cb('set maxAge', t => {
-	testHandler(t, {
-		maxAge: 12345
-	}, 'max-age=12345');
+test('can round maxAge', async t => {
+	await mock(
+		t,
+		{
+			maxAge: 1234.123
+		},
+		'max-age=1234'
+	);
 });
 
-test.cb('set enforce', t => {
-	testHandler(t, {
-		enforce: true
-	}, 'max-age=0, enforce');
+test('can enable enforcement', async t => {
+	await mock(
+		t,
+		{
+			enforce: true
+		},
+		'max-age=0, enforce'
+	);
 });
 
-test.cb('set reportUri', t => {
-	testHandler(t, {
-		reportUri: 'http://www.foobar.com'
-	}, `max-age=0, report-uri="http://www.foobar.com"`);
+test('can set reportUri', async t => {
+	await mock(
+		t,
+		{
+			reportUri: 'http://example.com/report'
+		},
+		'max-age=0, report-uri="http://example.com/report"'
+	);
+});
+
+test('can set enforcement, maxAge and reportUri', async t => {
+	await mock(
+		t,
+		{
+			enforce: true,
+			maxAge: 123,
+			reportUri: 'http://example.com/report'
+		},
+		'max-age=123, enforce, report-uri="http://example.com/report"'
+	);
 });

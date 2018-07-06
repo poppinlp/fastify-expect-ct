@@ -17,6 +17,11 @@ You may know [expect-ct](https://github.com/helmetjs/expect-ct) as a [expect-ct 
 
 You may find the reason in [benchmark result](./benchmarks/benchmark.txt) and wish you like it. :)
 
+## Difference
+
+This plugin has passed all [expect-ct](https://github.com/helmetjs/expect-ct) test cases.
+And no difference in options.
+
 ## Install
 
 Via npm:
@@ -65,6 +70,8 @@ Set `reportUri` value in header. Default is empty.
 
 ## Changelog
 
+- 0.3.0
+  - Use expect-ct test cases
 - 0.2.0
   - Add test case
   - Add code coverage

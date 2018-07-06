@@ -1,4 +1,8 @@
-Average req/sec in 5 times 10s test
-with no plugin: 30506.48
-with expect-ct middleware: 28123.97
-with fastify-expect-ct plugin: 29343.46
+node version: v10.6.0
+platform: darwin
+cpus: [{"model":"Intel(R) Core(TM) i7-5557U CPU @ 3.10GHz","speed":3100,"times":{"user":70268960,"nice":0,"sys":37732810,"idle":265400070,"irq":0}},{"model":"Intel(R) Core(TM) i7-5557U CPU @ 3.10GHz","speed":3100,"times":{"user":38412060,"nice":0,"sys":16144010,"idle":318826420,"irq":0}},{"model":"Intel(R) Core(TM) i7-5557U CPU @ 3.10GHz","speed":3100,"times":{"user":67782260,"nice":0,"sys":31894170,"idle":273706110,"irq":0}},{"model":"Intel(R) Core(TM) i7-5557U CPU @ 3.10GHz","speed":3100,"times":{"user":39122490,"nice":0,"sys":15719490,"idle":318540470,"irq":0}}]
+
+Average req/sec in 3 times 10s test
+with no plugin: 22960.35
+with expect-ct middleware: 17206.78
+with fastify-expect-ct plugin: 21060.47
